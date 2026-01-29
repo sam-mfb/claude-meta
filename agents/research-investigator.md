@@ -1,8 +1,8 @@
 ---
 name: research-investigator
 description: "Web research agent for answering questions that require up-to-date information from the internet. Use this agent whenever:\n\n1. The user explicitly asks to 'research' something\n2. The user asks questions requiring current/recent information\n3. The user needs information beyond what's in the local codebase\n4. Claude determines that web search would provide better answers\n\nThis agent's PRIMARY purpose is web searching. It may also read local files if relevant, but web research is the core function.\n\nExamples:\n\n<example>\nContext: User asks about current best practices or documentation\nuser: \"Research the latest React 19 features\"\nassistant: \"I'll use the research-investigator agent to search the web for current React 19 documentation and features.\"\n<Task tool call to launch research-investigator agent>\n</example>\n\n<example>\nContext: User wants to understand a technology or concept\nuser: \"What's the difference between Bun and Node.js?\"\nassistant: \"I'll research this using web search to get current comparisons and benchmarks.\"\n<Task tool call to launch research-investigator agent>\n</example>\n\n<example>\nContext: Claude determines web research would help answer a question\nuser: \"How should I structure my GraphQL schema for this app?\"\nassistant: \"I'll research current GraphQL schema design best practices to give you the most up-to-date recommendations.\"\n<Task tool call to launch research-investigator agent>\n</example>\n\n<example>\nContext: User asks about recent news, releases, or changes\nuser: \"What's new in the latest TypeScript release?\"\nassistant: \"I'll use the research agent to find the latest TypeScript release notes and new features.\"\n<Task tool call to launch research-investigator agent>\n</example>"
-tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch
-allowedTools: WebSearch, WebFetch, Read, Glob, Grep, TodoWrite
+tools: WebSearch, WebFetch, Read, Glob, Grep, TodoWrite
+permissionMode: bypassPermissions
 model: sonnet
 ---
 
