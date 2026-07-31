@@ -4,18 +4,5 @@
   "tipsHistory": {
     "new-user-warmup": 1
   },
-  "hasCompletedOnboarding": true,
-  "mcpServers": {
-    "Docker MCP Gateway": {
-      "type": "http",
-      "url": "http://host.docker.internal:8811/sse",
-      "headers": {
-        "Authorization": "Bearer ${MCP_GATEWAY_AUTH_TOKEN}"
-      }
-    },
-    "Azure DevOps": {
-      "command": "npx",
-      "args": ["-y", "@azure-devops/mcp", "${ADO_ORG}"]
-    }
-  }
+  "hasCompletedOnboarding": true
 }
