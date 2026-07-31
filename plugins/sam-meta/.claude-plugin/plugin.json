@@ -1,0 +1,10 @@
+{
+  "name": "sam-meta",
+  "version": "0.1.0",
+  "description": "Personal skills and agents: codex-cli and gemini-cli for second opinions from other models, research-investigator for web research, test-quality-reviewer for unit test audits.",
+  "author": {
+    "name": "Sam Davidoff",
+    "email": "sam@mfbtech.com"
+  },
+  "homepage": "https://github.com/sam-mfb/claude-meta"
+}
