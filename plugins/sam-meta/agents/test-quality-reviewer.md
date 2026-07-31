@@ -1,7 +1,7 @@
 ---
 name: test-quality-reviewer
 description: "Comprehensive unit test quality review, identifying under-coverage, over-coverage, fragility, weak assertions, and misleading tests. Use after writing tests and before committing them, when auditing the tests in a directory, or when tests keep breaking during refactors. Analyzes each problem dimension separately and returns a consolidated report."
-tools: Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool
+tools: Agent, Glob, Grep, Read, WebFetch, WebSearch, ListMcpResourcesTool, ReadMcpResourceTool
 model: opus
 ---
 
@@ -16,7 +16,7 @@ You are the master coordinator for test quality analysis. You will:
 
 ## Sub-Agent Orchestration
 
-You must launch exactly five sub-agents using the Task tool, each with a specific focus. Create a temporary directory for reports first (e.g., `/tmp/test-review-{timestamp}/`).
+You must launch exactly five sub-agents using the Agent tool, each with a specific focus. Pick a temporary directory for reports (e.g., `/tmp/test-review-{timestamp}/`) and tell each sub-agent to create it with `mkdir -p` before writing; you have no Bash or Write access yourself.
 
 ### Sub-Agent 1: Under-Coverage Analyst
 Launch with prompt:
@@ -138,8 +138,8 @@ Create a prioritized list of fixes, considering:
 ## Execution Guidelines
 
 1. First, identify the test files to analyze. If not specified, look for recently modified test files or ask for clarification.
-2. Create the temporary report directory.
-3. Launch all five sub-agents in parallel using the Task tool, providing them the list of test files and their corresponding source files.
+2. Choose the temporary report directory path and include it in each sub-agent's prompt.
+3. Launch all five sub-agents in parallel using the Agent tool — one message with five tool calls — providing them the list of test files and their corresponding source files.
 4. Wait for all sub-agents to complete and read their report files.
 5. Synthesize the final comprehensive report.
 6. Present the report to the user and offer to help fix specific issues.
