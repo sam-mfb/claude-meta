@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-meta",
+  "description": "Personal Claude Code marketplace: skills and agents for the docker-dev environment.",
+  "owner": {
+    "name": "Sam Davidoff",
+    "email": "sam@mfbtech.com"
+  },
+  "plugins": [
+    {
+      "name": "sam-meta",
+      "description": "Personal skills and agents: codex-cli and gemini-cli for second opinions from other models, research-investigator for web research, test-quality-reviewer for unit test audits.",
+      "source": "./plugins/sam-meta"
+    }
+  ]
+}

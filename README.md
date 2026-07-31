@@ -1,21 +1,49 @@
 # claude-meta
 
-Personal skills, agents, and configs for Claude Code.
+Personal Claude Code marketplace and global configs.
+
+## Layout
+
+```
+.claude-plugin/marketplace.json   # marketplace manifest (this repo is a marketplace)
+plugins/sam-meta/                 # the plugin: skills + agents
+  .claude-plugin/plugin.json
+  skills/                         # model-invoked skills (also usable as /slash commands)
+  agents/                         # custom subagents
+general/settings.json             # user-level ~/.claude/settings.json
+```
 
 ## Installation
 
+Skills and agents install as a plugin:
+
 ```bash
-cp -r skills/* ~/.claude/skills/
-cp -r agents/* ~/.claude/agents/
-cp general/CLAUDE.md ~/.claude/CLAUDE.md
-cp general/settings.json ~/.claude/settings.json
-cp general/claude.json ~/.claude.json
+claude plugin marketplace add sam-mfb/claude-meta
+claude plugin install sam-meta@claude-meta
 ```
 
-**Note:** This will overwrite existing configs.
+Restart Claude Code to load it. To update later:
 
-## Contents
+```bash
+claude plugin marketplace update claude-meta
+claude plugin update sam-meta
+```
 
-- `skills/` - Slash commands
-- `agents/` - Custom agents
-- `general/` - Global configs (CLAUDE.md, settings.json, claude.json)
+Global settings are not something a plugin can write, so they are copied
+separately. `update-claude-meta.sh` in the `docker-dev` repo does both steps,
+and runs during the Docker build.
+
+## Working on the plugin
+
+```bash
+claude plugin validate .                    # marketplace manifest
+claude plugin validate plugins/sam-meta     # plugin manifest
+claude plugin details sam-meta              # component inventory + token cost
+```
+
+Bump `version` in `plugins/sam-meta/.claude-plugin/plugin.json` when plugin
+contents change, so `claude plugin update` has something to move to.
+
+**Note:** `general/settings.json` is copied over `~/.claude/settings.json`
+wholesale, so it must hold the complete desired set of user settings — anything
+missing here gets removed on the next run.
