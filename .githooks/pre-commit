@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#
+# Bump the patch version of a plugin whenever a commit touches its contents.
+# Consumers only see changes after `claude plugin update`, which needs a higher
+# version number to move to.
+#
+# Enable with: git config core.hooksPath .githooks
+
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+
+staged=$(git diff --cached --name-only --diff-filter=ACMRD)
+[ -n "$staged" ] || exit 0
+
+bumped=()
+
+for manifest in plugins/*/.claude-plugin/plugin.json; do
+  [ -f "$manifest" ] || continue
+  plugin_dir=$(dirname "$(dirname "$manifest")")
+
+  # Did this commit touch anything in the plugin?
+  echo "$staged" | grep -q "^${plugin_dir}/" || continue
+
+  # Leave it alone if the version was already changed by hand.
+  if git diff --cached -U0 -- "$manifest" | grep -Eq '^[+-][[:space:]]*"version"'; then
+    continue
+  fi
+
+  current=$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$manifest" | head -1)
+  if ! echo "$current" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+    echo "pre-commit: $manifest has no plain x.y.z version (found '${current:-none}')." >&2
+    echo "pre-commit: bump it by hand, or commit with --no-verify." >&2
+    exit 1
+  fi
+
+  major=${current%%.*}
+  rest=${current#*.}
+  minor=${rest%%.*}
+  patch=${rest#*.}
+  next="${major}.${minor}.$((patch + 1))"
+
+  # Replace only the version line, so the rest of the file keeps its formatting.
+  sed -i "0,/\"version\"[[:space:]]*:[[:space:]]*\"${current}\"/s//\"version\": \"${next}\"/" "$manifest"
+  git add "$manifest"
+  bumped+=("$(basename "$plugin_dir") ${current} -> ${next}")
+done
+
+for line in "${bumped[@]:-}"; do
+  [ -n "$line" ] && echo "pre-commit: bumped $line"
+done
+
+exit 0

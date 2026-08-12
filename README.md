@@ -41,8 +41,18 @@ claude plugin validate plugins/sam-meta     # plugin manifest
 claude plugin details sam-meta              # component inventory + token cost
 ```
 
-Bump `version` in `plugins/sam-meta/.claude-plugin/plugin.json` when plugin
-contents change, so `claude plugin update` has something to move to.
+The plugin `version` must go up whenever plugin contents change, or
+`claude plugin update` has nothing to move to. A git hook does this
+automatically. Turn it on once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Any commit that touches `plugins/<name>/` bumps that plugin's patch version and
+stages the change. If you edit the version yourself in the same commit, the hook
+leaves it alone, so minor and major bumps still work. Commits that touch only
+the README, the marketplace manifest, or `general/` do not bump anything.
 
 **Note:** `general/settings.json` is copied over `~/.claude/settings.json`
 wholesale, so it must hold the complete desired set of user settings — anything
