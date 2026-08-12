@@ -1,6 +1,6 @@
 {
   "name": "sam-meta",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Personal skills and agents: codex-cli and gemini-cli for second opinions from other models, research-investigator for web research, test-quality-reviewer for unit test audits.",
   "author": {
     "name": "Sam Davidoff",
